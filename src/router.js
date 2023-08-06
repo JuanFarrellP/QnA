@@ -6,7 +6,7 @@ const routes = [
         name: 'Home',
         component: () => import('./pages/Home.vue'),
         meta: {
-            requiresAunth: true,
+            requiresAuth: true,
         }
     },
     {
@@ -24,6 +24,22 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+})
+
+router.beforeEach(async (to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        //Authentication Check 
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            //Check if token is valid
+            next()
+        }
+
+        return next('/login')
+    }
+
+    next()
 })
 
 export default router
