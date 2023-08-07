@@ -33,7 +33,7 @@ router.beforeEach(async (to, from, next) => {
 
         if (token) {
             //Check if token is valid
-            next()
+            return next()
         }
 
         return next('/login')
